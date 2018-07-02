@@ -1,3 +1,6 @@
+from random import randint
+
+
 def grandmaw_input():
     print('AYE SONNY BOY!')
     while True:
@@ -10,7 +13,7 @@ def grandmaw_input():
             break
 
         elif response == response.upper():
-            print('NOT SINCE THE GOOD OLE DAYS!')
+            print('NOT SINCE,', str(randint(1940, 1988)) + '!')
 
 
 def main():
