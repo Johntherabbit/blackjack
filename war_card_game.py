@@ -12,9 +12,26 @@ def deal():
     pile_1 = []
     deck_2 = cards[:26]
     pile_2 = []
-    #cards = []
 
     while True:
+        if len(deck_1) == 0:
+            shuffle(pile_1)
+            deck_1 = pile_1.copy()
+            pile_1 = []
+
+        if len(deck_1) == 0:
+            print('Player two wins!')
+            break
+
+        if len(deck_2) == 0:
+            shuffle(pile_2)
+            deck_2 = pile_2.copy()
+            pile_2 = []
+
+        if len(deck_2) == 0:
+            print('Player one wins!')
+            break
+
         x = deck_1.pop()
         y = deck_2.pop()
 
@@ -22,54 +39,12 @@ def deal():
             "Player 1: Drew {}\nLength of Hand: {}\nvs\nPlayer 2: Drew {}\nLength of Hand: {}".
             format(x, len(deck_1), y, len(deck_2)))
         print()
-        input()
-        #cards.extend([x, y])
+        #input()
 
-        if len(deck_1) == 0:
-            shuffle(pile_1)
-            deck_1 = pile_1.copy()
-            pile_1 = []
-            print('Player two wins!')
-            return
-
-        elif len(deck_2) == 0:
-            shuffle(pile_2)
-            deck_2 = pile_2.copy()
-            pile_2 = []
-            print('Player one wins!')
-            return
-
-        elif x > y:
+        if x > y:
             pile_1.extend([x, y])
         elif x < y:
             pile_2.extend([x, y])
-
-    #while True:
-
-
-#
-#    x = deck_1.pop()
-#    y = deck_2.pop()
-#
-#    print("Player 1: Drew {}\nvs\nPlayer 2: Drew {}".format(x, y))
-#    print()
-#    input()
-#    if deck_1 == []:
-#        print('$$$$$$$$')
-#        print('Player 2 Wins!')
-#        print('$$$$$$$$')
-#        print()
-#        return
-#    elif deck_2 == []:
-#        print('$$$$$$$$')
-#        print('Player 1 Wins!')
-#        print('$$$$$$$$')
-#        print()
-#        return
-#    elif x > y:
-#        deck_1.extend([x, y])
-#    elif x < y:
-#        deck_2.extend([x, y])
 
 
 def main():
