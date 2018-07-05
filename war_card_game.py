@@ -12,8 +12,10 @@ def deal():
     pile_1 = []
     deck_2 = cards[:26]
     pile_2 = []
+    tie = []
 
     while True:
+
         if len(deck_1) == 0:
             shuffle(pile_1)
             deck_1 = pile_1.copy()
@@ -41,7 +43,40 @@ def deal():
         print()
         #input()
 
-        if x > y:
+        if x == y:
+            print('This is War!')
+            shuffle(pile_1)
+            shuffle(pile_2)
+            deck_1.extend(pile_1)
+            pile_1 = []
+            deck_2.extend(pile_2)
+            pile_2 = []
+
+            if len(deck_1) < 4:
+                print('Player two wins!')
+                break
+
+            if len(deck_2) < 4:
+                print('Player one wins!')
+                break
+
+            else:
+                tie.append(deck_1.pop())
+                tie.append(deck_2.pop())
+                tie.append(deck_1.pop())
+                tie.append(deck_2.pop())
+                tie.append(deck_1.pop())
+                tie.append(deck_2.pop())
+
+                x = deck_1.pop()
+                y = deck_2.pop()
+
+                if x > y:
+                    pile_1.extend([x, y])
+                if x < y:
+                    pile_2.extend([x, y])
+
+        elif x > y:
             pile_1.extend([x, y])
         elif x < y:
             pile_2.extend([x, y])
