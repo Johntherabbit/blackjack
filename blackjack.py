@@ -99,7 +99,7 @@ def winner(you, dealer, total_cash, money):
         total_cash.append(money)
         print('You are the winner!')
     elif card_total(you) == card_total(dealer):
-        total_cash.append(money)
+        print('You will be refunded your money so you can try again ')
         print('Tied Game!')
     print()
     collect_money(total_cash)
@@ -114,16 +114,15 @@ def collect_money(total_cash):
 
 def bet_placing():
     while True:
-        response = round(
-            float(input('How much would you like to bet? >>> ')), 2)
-        if response > 10000:
-            print('Price is too high, please stay within the $10,000 limit.')
-        elif response == 0:
-            print('You must place a bet to play.')
-        elif response > 1 and response < 10001:
-            return response
-        else:
+        response = input('How much would you like to bet? >>> ')
+        if response.isdigit() == False:
             print('Not a valid number.')
+        elif int(response) > 10000:
+            print('Price is too high, please stay within the $10,000 limit.')
+        elif int(response) == 0:
+            print('You must place a bet to play.')
+        elif int(response) > 1 and int(response) <= 10000:
+            return int(response)
 
 
 def blackjack():
