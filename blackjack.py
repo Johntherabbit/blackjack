@@ -79,26 +79,54 @@ def players_input(you, deck):
             print('invalid input')
 
 
-def winner(you, dealer):
+def winner(you, dealer, total_cash, money):
     if card_total(dealer) == 21:
         print('The dealer has won!')
+        total_cash.remove(money)
     elif card_total(you) == 21:
-        print('You are the winner!')
-    elif card_total(dealer) > 21:
+        total_cash.append(money)
         print('You are the winner!')
     elif card_total(you) > 21:
+        total_cash.remove(money)
         print('Dealer won...')
+    elif card_total(dealer) > 21:
+        total_cash.append(money)
+        print('You are the winner!')
     elif card_total(dealer) > card_total(you) and card_total(dealer) <= 21:
+        total_cash.remove(money)
         print('The dealer has won!')
     elif card_total(you) > card_total(dealer) and card_total(you) <= 21:
+        total_cash.append(money)
         print('You are the winner!')
     elif card_total(you) == card_total(dealer):
+        total_cash.append(money)
         print('Tied Game!')
+    print()
+    collect_money(total_cash)
+
+
+def collect_money(total_cash):
+    if sum(total_cash) > 0:
+        print('Collect you earnings: ${}'.format(sum(total_cash)))
+    else:
+        print('Whoops, looks like you lost your bet!')
+
+
+def bet_placing():
+    while True:
+        response = round(
+            float(input('How much would you like to bet? >>> ')), 2)
+        if response > 10000:
+            print('Price is too high, please stay within the $10,000 limit.')
+        elif response == 0:
+            print('You must place a bet to play.')
+        elif response > 1 and response < 10001:
+            return response
+        else:
+            print('Not a valid number.')
 
 
 def blackjack():
-    # the_cards = {'King': 10, 'Queen': 10, 'Jack': 10}
-
     deck = [
         'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7,
         6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10,
@@ -108,6 +136,9 @@ def blackjack():
     shuffle(deck)
     you = []
     dealer = []
+    total_cash = []
+    money = bet_placing()
+    total_cash.append(money)
 
     while True:
         deal(dealer, deck)
@@ -121,17 +152,27 @@ def blackjack():
     print()
 
     players_input(you, deck)
-    # if card_total(you) <= 21:
     dealer_call(dealer, deck)
-    winner(you, dealer)
+    winner(you, dealer, total_cash, money)
     print()
-    print("Your Total: {}\nThe Dealers Total: {}".format(
+    print("This Game\'s Results\nYour Total: {}\nThe Dealers Total: {}".format(
         card_total(you), card_total(dealer)))
 
 
+def play_again():
+    print()
+    response = input('Would you like to play again? ')
+    while True:
+        if response == 'yes':
+            blackjack()
+            return None
+        elif response == 'no':
+            break
+
+
 def main():
-    # while True:
     blackjack()
+    play_again()
 
 
 if __name__ == '__main__':
