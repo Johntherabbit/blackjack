@@ -57,9 +57,11 @@ def dealer_call(dealer, deck):
         deal(dealer, deck)
         total = card_total(dealer)
         print(dealer, ' --> ', total)
+        print()
 
     if total > 21:
         print('The dealer has busted!')
+        print()
 
 
 def players_input(you, deck):
@@ -79,35 +81,36 @@ def players_input(you, deck):
             print('invalid input')
 
 
-def winner(you, dealer, total_cash, money):
+# betting has been left out until multiplayer betting has improved
+def winner(you, dealer):  #, total_cash, money):
     if card_total(dealer) == 21:
         print('The dealer has won!')
-        total_cash.remove(money)
+        #total_cash.remove(money)
     elif card_total(you) == 21:
-        total_cash.append(money)
-        print('You are the winner!')
+        #total_cash.append(money)
+        print('You are a winner!')
     elif card_total(you) > 21:
-        total_cash.remove(money)
-        print('Dealer won...')
+        #total_cash.remove(money)
+        print('The dealer has won!')
     elif card_total(dealer) > 21:
-        total_cash.append(money)
-        print('You are the winner!')
+        #total_cash.append(money)
+        print('You are a winner!')
     elif card_total(dealer) > card_total(you) and card_total(dealer) <= 21:
-        total_cash.remove(money)
+        #total_cash.remove(money)
         print('The dealer has won!')
     elif card_total(you) > card_total(dealer) and card_total(you) <= 21:
-        total_cash.append(money)
-        print('You are the winner!')
+        #total_cash.append(money)
+        print('You are a winner!')
     elif card_total(you) == card_total(dealer):
         print('You will be refunded your money so you can try again ')
         print('Tied Game!')
     print()
-    collect_money(total_cash)
+    #collect_money(total_cash)
 
 
 def collect_money(total_cash):
     if sum(total_cash) > 0:
-        print('Collect you earnings: ${}'.format(sum(total_cash)))
+        print('Collect your earnings: ${}'.format(sum(total_cash)))
     else:
         print('Whoops, looks like you lost your bet!')
 
@@ -117,27 +120,94 @@ def bet_placing():
         response = input('How much would you like to bet? >>> ')
         if response.isdigit() == False:
             print('Not a valid number.')
-        elif int(response) > 10000:
-            print('Price is too high, please stay within the $10,000 limit.')
+        elif int(response) > 20:
+            print('Price is too high, please stay within the $20 limit.')
         elif int(response) == 0:
             print('You must place a bet to play.')
-        elif int(response) > 1 and int(response) <= 10000:
+        elif int(response) > 1 and int(response) <= 20:
             return int(response)
+
+
+def multiplayer():
+    while True:
+        response = input(
+            'Press s for singleplayer, or press m for multiplayer >>> ')
+        if response == 's':
+            blackjack()
+            play_again()
+            return None
+        elif response == 'm':
+            multiplayer_blackjack()
+            play_again()
+            return None
+        else:
+            print('Please provide a valid answer.')
+
+
+def multiplayer_blackjack():
+    deck = [
+        'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7,
+        6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10,
+        10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3,
+        2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8,
+        7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10,
+        10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3,
+        2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8,
+        7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10,
+        10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3,
+        2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8,
+        7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10,
+        10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3,
+        2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8,
+        7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10,
+        10, 10, 9, 8, 7, 6, 5, 4, 3, 2
+    ]
+
+    shuffle(deck)
+    players = [[], []]
+    dealer = []
+
+    while True:
+        deal(dealer, deck)
+        deal(dealer, deck)
+
+        for player in players:
+            deal(players[0], deck)
+            deal(players[0], deck)
+            deal(players[1], deck)
+            deal(players[1], deck)
+            break
+        break
+    print(".....\nPlayer one's Hand {}\nTotal: {}\n".format(
+        players[0], card_total(players[0])))
+    players_input(players[0], deck)
+    print(".....\nPlayer two's Hand {}\nTotal: {}\n".format(
+        players[1], card_total(players[1])))
+    print("Dealer's Hand [{},?]\n".format(dealer[1]))
+    players_input(players[1], deck)
+    dealer_call(dealer, deck)
+    print(
+        "\n.....\nPlayer one:\nTotal: {}\nThe Dealers Total: {}\n".format(
+            card_total(players[0]), dealer), card_total(dealer))
+    winner(players[0], dealer)
+    print(
+        "\n.....\nPlayer two:\nTotal: {}\nThe Dealers Total: {}\n".format(
+            card_total(players[1]), dealer), card_total(dealer))
+    winner(players[1], dealer)
 
 
 def blackjack():
     deck = [
         'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7,
         6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10,
-        10, 10, 9, 8, 7, 6, 5, 4, 3, 2
+        10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3,
+        2, 'Ace', 10, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2
     ]
 
     shuffle(deck)
     you = []
     dealer = []
     total_cash = []
-    money = bet_placing()
-    total_cash.append(money)
 
     while True:
         deal(dealer, deck)
@@ -149,10 +219,12 @@ def blackjack():
     print()
     print("Dealer's Hand [{},?]".format(dealer[1]))
     print()
+    #money = bet_placing()
+    #total_cash.append(money)
 
     players_input(you, deck)
     dealer_call(dealer, deck)
-    winner(you, dealer, total_cash, money)
+    winner(you, dealer)  #, total_cash, money)
     print()
     print("This Game\'s Results\nYour Total: {}\nThe Dealers Total: {}".format(
         card_total(you), card_total(dealer)))
@@ -160,18 +232,27 @@ def blackjack():
 
 def play_again():
     print()
-    response = input('Would you like to play again? ')
     while True:
+        response = input('Would you like to play again? ')
         if response == 'yes':
             blackjack()
-            return None
         elif response == 'no':
             break
 
 
+def multiplayer_play_again():
+    print()
+    response = input('Would you all like to play again? ')
+    while True:
+        if response == 'yes':
+            multiplayer_blackjack()
+            return None
+        elif response == 'no\n.....':
+            break
+
+
 def main():
-    blackjack()
-    play_again()
+    multiplayer()
 
 
 if __name__ == '__main__':
